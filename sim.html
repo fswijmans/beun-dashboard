@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Demo</title>
+</head>
+
+<body>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+        crossorigin="anonymous">
+        </script>
+
+<script>
+    const measurements_url = 'http://192.168.0.29:8080/measurements';
+
+    let testData = {
+        name: "sous-vide-1",
+        sensors: [
+            { name: "temp-1", value: 24.5 },
+            { name: "temp-2", value: 25.0 },
+            { name: "temp-3", value: 24.8 },
+            { name: "temp-4", value: 24.9 }
+        ],
+        target: 80.0
+    };
+
+    let handleButtonClick = function () {
+        console.log('post ', testData);
+
+        $.ajax({
+            contentType: 'application/json',
+            data: JSON.stringify(testData),
+            dataType: 'json',
+            success: function (data) {
+                console.log('success ', data);
+            },
+            error: function () {
+                console.log("Error");
+            },
+            processData: false,
+            type: 'POST',
+            url: measurements_url
+        });
+
+    };
+
+</script>
+
+<h1>Temperature gauges</h1>
+<div>
+    <label for="gauge1">Gauge 1</label>
+    <input id="gauge1" type="text" value="0.0">
+</div>
+<div>
+    <label for="gauge2">Gauge 2</label>
+    <input id="gauge2" type="text" value="0.0">
+</div>
+<div>
+    <label for="gauge3">Gauge 3</label>
+    <input id="gauge3" type="text" value="0.0">
+</div>
+<div>
+    <label for="gauge4">Gauge 4</label>
+    <input id="gauge4" type="text" value="0.0">
+</div>
+
+<div>
+    <label for="refreshRate">Measure rate</label>
+    <select id="refreshRate">
+        <option>2 ms</option>
+        <option>1k ms</option>
+        <option>500 ms</option>
+        <option>250 ms</option>
+    </select>
+    <button onclick="handleButtonClick()">Manual</button>
+</div>
+
+</script>
+</body>
+
+</html>

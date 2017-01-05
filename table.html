@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Table</title>
+
+    <style>
+
+#container table tbody tr:nth-child(odd) {
+   background-color: #ccc;
+   margin:0;
+   padding:0;
+}
+
+#container table {
+    border-spacing: 0;
+}
+
+#container td, th {
+    padding: 8px 8px 8px 8px;
+}
+
+</style>
+
+</head>
+
+<body>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+        crossorigin="anonymous">
+        </script>
+
+<script>
+    const measurements_url = 'http://localhost:8080/measurements';
+
+    var avg = function (sensorData) {
+        if (!sensorData || sensorData.length === 0) {
+            return -1;
+        }
+
+        var sum = 0;
+        $.each(sensorData, function (key, sensorValue) {
+            //sensorValue : {name: '', value: x}
+            sum += sensorValue.value;
+        });
+        return sum / sensorData.length;
+    };
+
+    var loadData = function () {
+        $.get(measurements_url, function (data) {
+            var html = '<tbody>';
+
+            //foreach data
+            $.each(data, function (key, value) {
+                html += '<tr><td>' + value.name +
+                    '</td><td>' + value.createDate +
+                    '</td><td>' + value.target +
+                    '</td><td>' + value.sensors.length +
+                    '</td><td>' + Math.round(value.sensors[0].value, -2) +
+                    '</td><td>' + Math.round(value.sensors[1].value, -2) +
+                    '</td><td>' + Math.round(value.sensors[2].value, -2) +
+                    '</td><td>' + Math.round(value.sensors[3].value, -2) +
+                    '</td><td>' + Math.round(avg(value.sensors), -2) +
+                    '</td></tr>';
+            });
+            html += '</tbody>';
+
+            $('#container table tbody').replaceWith(html);
+        })
+    };
+
+    loadData();
+
+</script>
+
+<div id="container">
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Create Data</th>
+                <th>Target</th>
+                <th># of Sensors</th>
+                <th>Sensor 1</th>
+                <th>Sensor 2</th>
+                <th>Sensor 3</th>
+                <th>Sensor 4</th>
+                <th>Avg</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+
+    </table>
+
+</div>
+
+<button onclick="loadData()">Reload</button>
+
+</script>
+</body>
+
+</html>
