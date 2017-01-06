@@ -12,20 +12,23 @@
         </script>
 
 <script>
-    const measurements_url = 'http://192.168.0.29:8080/measurements';
+    const measurements_url = 'http://localhost:8080/measurements';
+
+    let handleButtonClick = function () {
+
 
     let testData = {
         name: "sous-vide-1",
         sensors: [
-            { name: "temp-1", value: 24.5 },
-            { name: "temp-2", value: 25.0 },
-            { name: "temp-3", value: 24.8 },
-            { name: "temp-4", value: 24.9 }
+            { name: "temp-1", value: $('#gauge1').first().val() },
+            { name: "temp-2", value: $('#gauge2').first().val() },
+            { name: "temp-3", value: $('#gauge3').first().val() },
+            { name: "temp-4", value: $('#gauge4').first().val() }
         ],
         target: 80.0
     };
 
-    let handleButtonClick = function () {
+
         console.log('post ', testData);
 
         $.ajax({
@@ -44,6 +47,20 @@
         });
 
     };
+
+    let updateGauge = function (element) {
+        $(element).first().val(parseFloat($(element).first().val()) + ((Math.random() - 0.2)*100)/100);
+        $(element).first().val(Math.round($(element).first().val() * 100) / 100);
+    }
+
+    setInterval(function(){ updateGauge('#gauge1') }, 250);
+    setInterval(function(){ updateGauge('#gauge2') }, 250);
+    setInterval(function(){ updateGauge('#gauge3') }, 250);
+    setInterval(function(){ updateGauge('#gauge4') }, 250);
+
+    setInterval(handleButtonClick, 1000)
+
+
 
 </script>
 

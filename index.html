@@ -1,0 +1,49 @@
+<html>
+
+<head>
+    <title>Dashboard</title>
+    <style>
+        #container {
+            display: flex;
+            flex-flow: row wrap;
+            height: 500px;
+            width: 100%;
+        }
+        
+        .halfscreen {
+            width: 400px;
+            height: 200px;
+            margin: auto;
+            /* Magic! */
+        }
+        .frame{
+            width: 400px;
+            height: 200px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div>
+        <h1>Beunboard</h1>
+    </div>
+
+    <div id="container">
+
+        <div class="halfscreen">
+            <h2>Simulation</h2>
+            <iframe class="frame" src="sim.html"></iframe>
+        </div>
+        <div class="halfscreen">
+            <h2>Chart</h2>
+
+            <iframe class="frame" src="chart.html"></iframe>
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>
